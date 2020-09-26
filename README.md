@@ -2,6 +2,7 @@
 
 Desktop app for Serverless Python Environment for scientific computing with WebAssembly. Uses Pyodide and TF.js as runtime engines.
 
+![Screenshot](https://raw.githubusercontent.com/inureyes/pyodide-console/main/resources/console_screenshot.png)
 
  * [Pyodide](https://github.com/iodide-project/pyodide) to run Python scientific stack with WASM technology.
  * [TensorFlow.js](https://www.tensorflow.org/js) to run TensorFlow.js machine learning stack.
