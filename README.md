@@ -1,10 +1,10 @@
 ## Pyodide Console: run your scientific python codes without installing python
 
-Desktop app for Serverless Python Environment for scientific computing with WebAssembly
+Desktop app for Serverless Python Environment for scientific computing with WebAssembly. Uses Pyodide and TF.js as runtime engines.
 
-Pyodide-based stand-alone console.
 
-[Pyodide](https://github.com/iodide-project/pyodide) console to run Python scientific stack with WASM technology.
+ * [Pyodide](https://github.com/iodide-project/pyodide) to run Python scientific stack with WASM technology.
+ * [TensorFlow.js](https://www.tensorflow.org/js) to run TensorFlow.js machine learning stack.
 
 For more information, refer these materials:
 
@@ -70,6 +70,6 @@ $ make linux # build linux app
 
 ## Credits
 
- * [Iodide: Seamless scientific computing with web technologies](https://github.com/iodide-project)
- * [Pyodide: The Python scientific stack, compiled to WebAssembly](https://github.com/iodide-project/pyodide)
- * [Backend.AI Console](https://github.com/lablup/backend.ai-console)
+ * Uses [Pyodide: The Python scientific stack, compiled to WebAssembly](https://github.com/iodide-project/pyodide) scientific python stack compiled to WASM.
+ * [Iodide: Seamless scientific computing with web technologies](https://github.com/iodide-project) project to make LLVM-WASM compilation chain.
+ * The codes are heavily based on [Backend.AI Console](https://github.com/lablup/backend.ai-console).
