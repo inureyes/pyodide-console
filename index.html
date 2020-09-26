@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Backend.AI Pyodide Console" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="theme-color" content="#fff" />
+    <base href="" />
+    <link rel="icon" href="manifest/favicon.ico" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="resources/fonts/fonts.css" />
+    <link rel="stylesheet" href="resources/fonts/font-awesome.css" />
+    <link rel="stylesheet" href="resources/custom.css" />
+    <script src="manifest/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+
+    <title>Pyodide Console</title>
+    <script type="module">
+
+    </script>
+    <script>
+      globalThis.isElectron = isElectron();
+      globalThis.enableSW = true;
+
+      globalThis.process = {
+        env: {
+          NODE_ENV: "production",
+        },
+      };
+      globalThis.packageVersion = "0.1.0";
+      globalThis.buildVersion = "200926.100907";
+      console.stdlog = console.log.bind(console);
+      console.logs = [];
+      console.log = function () {
+        console.logs.push(Array.from(arguments));
+        console.stdlog.apply(console, arguments);
+        let event = new CustomEvent('lablup-log-add', {"detail": Array.from(arguments)});
+        document.dispatchEvent(event);
+      };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Ubuntu", "Quicksand", Roboto, sans-serif;
+        background-color: #ffffff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <pyodide-console id="console-shell" style="background-color: #222222">
+    </pyodide-console>
+    <div id="result-area" style="display: none"></div>
+    <noscript>
+      <p>Could not render console. Check that JavaScript is enabled.</p>
+    </noscript>
+    <script src="./dist/components/pyodide-console.js" type="module"></script>
+    <script>
+      if (globalThis.isIE) {
+        alert(
+          "Internet Explorer is not supported. Please visit with modern browsers."
+        );
+      }
+      if (
+        !["127.0.0.1", "localhost"].includes(window.location.hostname) &&
+        "enableSW" in globalThis &&
+        globalThis.enableSW === true
+      ) {
+        // Service worker routine.
+        if ("serviceWorker" in navigator && globalThis.isElectron === false) {
+          window.addEventListener("load", () => {
+            navigator.serviceWorker.register("/sw.js");
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

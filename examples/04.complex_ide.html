@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <script type="text/javascript">
+            globalThis.languagePluginUrl = 'https://pyodide-cdn2.iodide.io/v0.15.0/full/';
+        </script>
+        <script src="https://pyodide-cdn2.iodide.io/v0.15.0/full/pyodide.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js"></script>
+  </head>
+  <body>
+    <h2>Runtime test</h2>
+    <div id="repl-area">
+        Loading components...
+    </div>
+    <script type="text/javascript">
+        globalThis.iodide = {
+            output:{
+                element: (tagName) => {
+                    let outputPane = document.createElement(tagName);
+                    document.querySelector("#result-pane").appendChild(outputPane);
+                    return outputPane;
+                }
+            }
+        };
+        let replArea = document.querySelector('#repl-area');
+        function add_block() {
+            let block = document.createElement('div');
+            let codeBlock = document.createElement('textarea');
+            let button = document.createElement('button');
+            let resultBlock = document.createElement('div');
+            button.textContent = 'Execute';
+            button.addEventListener('click', ()=>execute_code_block(codeBlock, resultBlock));
+            block.appendChild(codeBlock);
+            block.appendChild(button);
+            block.appendChild(resultBlock);
+            replArea.appendChild(block);
+        }
+
+        async function execute_code_block(codeBlock, resultBlock) {
+            console.log('clicked');
+            let code = codeBlock.value;
+            console.log(code);
+            let result = await pyodide.runPythonAsync(code).catch(err=>{
+                let errorBlock = document.createElement('div');
+                errorBlock.textContent = err;
+                resultBlock.appendChild(errorBlock);
+            });
+            let stdout = pyodide.runPython("sys.stdout.getvalue()")
+            let stdout_console = document.createElement('div');
+            stdout_console.innerText = stdout;
+            resultBlock.appendChild(stdout_console);
+            pyodide.runPython("sys.stdout.flush()");
+            add_block();
+        }
+
+        BrowserFS.configure({
+            fs: "LocalStorage"
+        }, async function(e) {
+            console.log("Storage initialized.");
+            console.log(languagePluginLoader);
+            //var fs = BrowserFS.BFSRequire('fs');
+            //fs.writeFileSync('test.txt', 'Python+WebAssembly is Awesome!');
+            languagePluginLoader.then(async ()=>{
+                console.log("Module loaded.");
+                let FS = pyodide._module.FS;
+                let PATH = pyodide._module.PATH;
+                console.log(FS.mount);
+                console.log(PATH);
+
+                // Create an Emscripten interface for the BrowserFS
+                var BFS = new BrowserFS.EmscriptenFS(FS, PATH);
+                // Create mount point in Emscripten FS
+                FS.createFolder(FS.root, 'data', true, true);
+                // Mount BrowserFS into Emscripten FS
+                FS.mount(BFS, {root: '/'}, '/data');
+                pyodide.runPython(`
+                    import sys
+                    from io import StringIO
+                    sys.stdout = StringIO()
+                `);
+                add_block();
+            });
+        });
+    </script>
+  </body>
+</html>

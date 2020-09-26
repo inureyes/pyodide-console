@@ -1,0 +1,6 @@
+Please download pyodide build via:
+wget https://github.com/iodide-project/pyodide/releases/download/0.15.0/pyodide-build-0.15.0.tar.bz2
+
+and extract the file into this directory using
+
+tar xvpzf ./pyodide-build-0.15.0.tar.bz2

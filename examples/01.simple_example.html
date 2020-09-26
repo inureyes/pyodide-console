@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <script type="text/javascript">
+          window.languagePluginUrl = 'https://pyodide-cdn2.iodide.io/v0.15.0/full/';
+      </script>
+      <script src="https://pyodide-cdn2.iodide.io/v0.15.0/full/pyodide.js"></script>
+  </head>
+  <body>
+    Runtime test:
+    <div id="result-pane"></div>
+    <script type="text/javascript">
+        let resultPane = document.querySelector('#result-pane');
+        languagePluginLoader.then(async ()=>{
+            resultPane.innerHTML = ''; 
+            let result = await pyodide.runPythonAsync(`
+                import numpy as np
+                import sys
+                print(sys.version)
+                print(np.__version__)
+                a = np.__version__
+            `).then(result=>{
+                if (typeof result !== "undefined") {
+                    resultPane.innerHTML = result;          
+                }
+            });
+            console.log(pyodide.globals);
+            resultPane.innerHTML = pyodide.globals.a; 
+        });
+    </script>
+  </body>
+</html>

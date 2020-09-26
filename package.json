@@ -1,0 +1,46 @@
+{
+  "name": "pyodide-console",
+  "version": "0.1.0",
+  "repository": "https://github.com/inureyes/pyodide-console.git",
+  "author": "Jeongkyu Shin <inureyes@gmail.com>",
+  "license": "LGPL-3.0-or-later",
+  "main": "main.js",
+  "scripts": {
+    "lint": "eslint *.js",
+    "electron:d": "./node_modules/electron/cli.js . --dev",
+    "test": "./node_modules/testcafe/bin/testcafe-with-v8-flag-filter.js chrome ./tests/*.js",
+    "build": "rm -rf build/rollup && mkdir -p build/rollup/src/components && npm run copyindex && npm run copyresource && npm run copyconfig && rollup -c rollup.config.ts",
+    "server:p": "./node_modules/serve/bin/serve.js build/rollup",
+    "server:d": "./node_modules/es-dev-server/dist/cli.js --file-extensions .ts --compatibility min",
+    "build:d": "./node_modules/typescript/bin/tsc --watch",
+    "copyresource": "cp -Rp resources build/rollup && cp -Rp manifest build/rollup",
+    "copyconfig": "cp version.json build/rollup && cp manifest.json build/rollup",
+    "copyindex": "cp index.html build/rollup",
+    "update": "./node_modules/typescript/bin/tsc",
+    "init":"cd ./src/lib/pyodide && wget https://github.com/iodide-project/pyodide/releases/download/0.15.0/pyodide-build-0.15.0.tar.bz2 && tar xvpzf ./pyodide-build-0.15.0.tar.bz2"
+  },
+  "dependencies": {
+    "@material/mwc-circular-progress-four-color": "^0.18.0",
+    "@material/mwc-drawer": "^0.18.0",
+    "@material/mwc-icon-button": "^0.18.0",
+    "@material/mwc-snackbar": "^0.18.0",
+    "@material/mwc-top-app-bar-fixed": "^0.18.0",
+    "@rollup/plugin-replace": "^2.3.3",
+    "@tensorflow/tfjs": "^2.3.0",
+    "@vanillawc/wc-codemirror": "^1.8.10",
+    "browserfs": "^1.4.3",
+    "electron": "^10.1.1",
+    "font-awesome": "^4.7.0",
+    "lit-element": "^2.4.0",
+    "material-design-icons-iconfont": "^6.1.0",
+    "rollup-plugin-typescript": "^1.0.1"
+  },
+  "devDependencies": {
+    "electron-installer-dmg": "^3.0.0",
+    "electron-packager": "^15.1.0",
+    "es-dev-server": "^1.57.4",
+    "rollup": "^2.26.10",
+    "rollup-plugin-workbox": "^5.2.1",
+    "typescript": "^4.0.2"
+  }
+}

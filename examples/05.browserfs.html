@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <script type="text/javascript">
+        window.languagePluginUrl = 'https://pyodide-cdn2.iodide.io/v0.15.0/full/';
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js"></script>
+      <script src="https://pyodide-cdn2.iodide.io/v0.15.0/full/pyodide.js"></script>
+  </head>
+  <body>
+    Runtime test:
+    <div id="result-pane"></div>
+    <script type="text/javascript">
+        let resultPane = document.querySelector('#result-pane');
+        BrowserFS.install(window);
+        BrowserFS.configure({
+            fs: "LocalStorage"
+        }, function(e) {
+            const fss = require('fs');
+            //var fs = BrowserFS.BFSRequire('fs');
+            fss.writeFileSync('/test.txt', 'Python+WebAssembly is Awesome!');
+
+            languagePluginLoader.then(async ()=>{
+                resultPane.innerHTML = ''; 
+                let FS = pyodide._module.FS;
+                let PATH = pyodide._module.PATH;
+                // Create an Emscripten interface for the BrowserFS
+                var BFS = new BrowserFS.EmscriptenFS(FS, PATH);
+                // Create mount point in Emscripten FS
+                FS.createFolder(FS.root, 'data', true, true);
+                // Mount BrowserFS into Emscripten FS
+                FS.mount(BFS, {root: '/'}, '/data');
+                // Open file in BrowserFS from python and show contents
+                let result = await pyodide.runPythonAsync(`
+                    import numpy as np
+                    import sys
+                    import glob
+                    import js
+                    print(sys.version)
+                    print(np.__version__)
+                    f = open('/data/test.txt')
+                    print(f.readline())
+                `);
+                resultPane.innerHTML = result; 
+            });
+        });
+    </script>
+  </body>
+</html>

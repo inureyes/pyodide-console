@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <script type="text/javascript">
+          window.languagePluginUrl = 'pyodide/';
+      </script>
+      <script src="pyodide/pyodide.js"></script>
+  </head>
+  <body>
+    Runtime test:
+    <div id="result-pane"></div>
+    <script type="text/javascript">
+        window.iodide = 
+        {
+            output:
+            {
+                // Create a new element with tagName
+                // and add it to an element with id "root".
+                element: (tagName) =>
+                {
+                    let elem = document.createElement(tagName);
+                    document.querySelector("#result-pane").appendChild(elem);
+                    return elem;
+                }
+            }
+        };
+        let resultPane = document.querySelector('#result-pane');
+        languagePluginLoader.then(async ()=>{
+            resultPane.innerHTML = ''; 
+            pyodide.runPythonAsync(`
+import matplotlib.pyplot as plt
+import numpy as np
+
+t = np.arange(0.0, 2.0, 0.01)
+s = 1 + np.sin(2*np.pi*t)
+plt.plot(t, s)
+
+plt.xlabel('time (s)')
+plt.ylabel('voltage (mV)')
+plt.title('About as simple as it gets, folks')
+plt.grid(True)
+plt.savefig("test.png")
+plt.show()
+            `);
+            resultPane.innerHTML = pyodide.globals.my_string;
+        });
+    </script>
+  </body>
+</html>

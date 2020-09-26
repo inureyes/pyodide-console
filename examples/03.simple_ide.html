@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <script type="text/javascript">
+          window.languagePluginUrl = 'pyodide/';
+      </script>
+      <script src="pyodide/pyodide.js"></script>
+  </head>
+  <body>
+    <h2>Runtime test</h2>
+    <textarea id="code-pane"></textarea>
+    <button id="execute-button">Initializing...</button>
+    <div id="result-pane"></div>
+    <script type="text/javascript">
+        globalThis.iodide = {
+            output:{
+                element: (tagName) => {
+                    let outputPane = document.createElement(tagName);
+                    document.querySelector("#result-pane").appendChild(outputPane);
+                    return outputPane;
+                }
+            }
+        };
+        let executeButton = document.querySelector('#execute-button');
+        let resultPane = document.querySelector('#result-pane');
+        languagePluginLoader.then( ()=>{
+            pyodide.runPython(`
+                import sys
+                import io
+                sys.stdout = io.StringIO()
+            `);
+            executeButton.textContent = 'Execute';
+            executeButton.addEventListener('click', execute_code);
+        });
+        async function execute_code() {
+            let code = document.querySelector('#code-pane').value;
+            let result = await pyodide.runPythonAsync(code);
+            let stdout = pyodide.runPython("sys.stdout.getvalue()")
+            let stdout_console = document.createElement('div');
+            stdout_console.innerText = stdout;
+            resultPane.appendChild(stdout_console);
+        }
+    </script>
+  </body>
+</html>
