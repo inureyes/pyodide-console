@@ -1,4 +1,4 @@
-## Pyodide Console: run your scientific codes
+## Pyodide Console: run your scientific python codes without installing python
 
 Desktop app for Serverless Python Environment for scientific computing with WebAssembly
 
