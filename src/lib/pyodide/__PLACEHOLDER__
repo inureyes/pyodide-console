@@ -3,4 +3,4 @@ wget https://github.com/iodide-project/pyodide/releases/download/0.15.0/pyodide-
 
 and extract the file into this directory using
 
-tar xvpzf ./pyodide-build-0.15.0.tar.bz2
+tar xvzf ./pyodide-build-0.15.0.tar.bz2

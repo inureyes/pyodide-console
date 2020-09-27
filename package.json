@@ -17,7 +17,7 @@
     "copyconfig": "cp version.json build/rollup && cp manifest.json build/rollup",
     "copyindex": "cp index.html build/rollup",
     "update": "./node_modules/typescript/bin/tsc",
-    "init": "cd ./src/lib/pyodide && wget https://github.com/iodide-project/pyodide/releases/download/0.15.0/pyodide-build-0.15.0.tar.bz2 && tar xvpzf ./pyodide-build-0.15.0.tar.bz2"
+    "init": "cd ./src/lib/pyodide && wget https://github.com/iodide-project/pyodide/releases/download/0.15.0/pyodide-build-0.15.0.tar.bz2 && tar xvzf ./pyodide-build-0.15.0.tar.bz2"
   },
   "dependencies": {
     "@material/mwc-circular-progress-four-color": "^0.18.0",
