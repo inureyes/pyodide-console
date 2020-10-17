@@ -1,9 +1,9 @@
 {
   "description": "Pyodide Console",
-  "manifest_version": 5,
+  "manifest_version": 1,
   "name": "Pyodide Console",
   "short_name": "PyodideConsole",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fff",
