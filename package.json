@@ -1,6 +1,6 @@
 {
   "name": "pyodide-console",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": "https://github.com/inureyes/pyodide-console.git",
   "author": "Jeongkyu Shin <inureyes@gmail.com>",
   "license": "LGPL-3.0-or-later",
